@@ -1,12 +1,14 @@
 {
   "info": {
-    "name": "Clinic Backend - Visit Flow",
+    "name": "Clinic Backend - Complete API Collection",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "End-to-end OPD/Doctor/Lab/Medical flow APIs"
+    "description": "Complete Postman collection for ClinicBackend APIs (Super Admin, Clinic Accounts, Patients, Payments, and Visit Flow)."
   },
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:5000" },
-    { "key": "token", "value": "" },
+    { "key": "superAdminToken", "value": "" },
+    { "key": "clinicToken", "value": "" },
+    { "key": "clinicId", "value": "" },
     { "key": "patientId", "value": "" },
     { "key": "visitId", "value": "" },
     { "key": "testId", "value": "" },
@@ -14,115 +16,637 @@
   ],
   "item": [
     {
-      "name": "1. Book Visit",
-      "request": {
-        "method": "POST",
-        "header": [
-          { "key": "Authorization", "value": "Bearer {{token}}" },
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "url": "{{baseUrl}}/api/visits/book",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"visitDate\": \"2026-04-21\",\n  \"bookingSource\": \"clinic\",\n  \"visitType\": \"new\"\n}"
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/health"
+          }
         }
-      }
+      ]
     },
     {
-      "name": "2. Date Queue",
-      "request": {
-        "method": "GET",
-        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-        "url": "{{baseUrl}}/api/visits?date=2026-04-21"
-      }
+      "name": "Super Admin",
+      "item": [
+        {
+          "name": "Login Super Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.token) {",
+                  "  pm.collectionVariables.set('superAdminToken', json.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/super-admin/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"superadmin@clinicapp.com\",\n  \"password\": \"Admin@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{superAdminToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/super-admin/dashboard"
+          }
+        },
+        {
+          "name": "Get Clinics",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json?.data?.[0]?._id) {",
+                  "  pm.collectionVariables.set('clinicId', json.data[0]._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{superAdminToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/super-admin/clinics"
+          }
+        },
+        {
+          "name": "Get Clinic By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{superAdminToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/super-admin/clinics/{{clinicId}}"
+          }
+        },
+        {
+          "name": "Update Clinic Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{superAdminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/super-admin/clinics/{{clinicId}}/status",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"active\",\n  \"isLoginBlocked\": false,\n  \"deactivateOn\": null\n}"
+            }
+          }
+        },
+        {
+          "name": "Register Clinic (By Super Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{superAdminToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/super-admin/clinics/register",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "clinicName", "value": "City Care Clinic", "type": "text" },
+                { "key": "ownerName", "value": "Dr. Rahul Mehta", "type": "text" },
+                { "key": "email", "value": "citycare@example.com", "type": "text" },
+                { "key": "phoneNumber", "value": "9876543210", "type": "text" },
+                { "key": "registrationNumber", "value": "REG-2026-001", "type": "text" },
+                { "key": "address", "value": "Main Road", "type": "text" },
+                { "key": "country", "value": "India", "type": "text" },
+                { "key": "state", "value": "Maharashtra", "type": "text" },
+                { "key": "city", "value": "Pune", "type": "text" },
+                { "key": "fullAddress", "value": "Main Road, Pune", "type": "text" },
+                { "key": "pincode", "value": "411001", "type": "text" },
+                { "key": "adminName", "value": "Clinic Admin", "type": "text" },
+                { "key": "adminEmail", "value": "clinicadmin@example.com", "type": "text" },
+                { "key": "password", "value": "Admin@123", "type": "text" },
+                { "key": "subscriptionPlan", "value": "premium", "type": "text" },
+                { "key": "clinicType", "value": "general", "type": "text" },
+                { "key": "doctorCount", "value": "3", "type": "text" },
+                { "key": "staffCount", "value": "8", "type": "text" },
+                { "key": "consultationFee", "value": "300", "type": "text" },
+                { "key": "openingHours", "value": "09:00-20:00", "type": "text" },
+                { "key": "hasOPD", "value": "true", "type": "text" },
+                { "key": "hasLab", "value": "true", "type": "text" },
+                { "key": "hasMedicalStore", "value": "true", "type": "text" },
+                { "key": "deactivateOn", "value": "", "type": "text" },
+                { "key": "licenseUpload", "type": "file", "src": "" },
+                { "key": "ownerId", "type": "file", "src": "" },
+                { "key": "logo", "type": "file", "src": "" }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
-      "name": "3. Update OPD Payment",
-      "request": {
-        "method": "PATCH",
-        "header": [
-          { "key": "Authorization", "value": "Bearer {{token}}" },
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "url": "{{baseUrl}}/api/visits/{{visitId}}/opd-payment",
-        "body": { "mode": "raw", "raw": "{\n  \"status\": \"paid\",\n  \"amount\": 300\n}" }
-      }
+      "name": "Clinic Registration (Public)",
+      "item": [
+        {
+          "name": "Register Clinic (Public Route)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/clinics/register",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "clinicName", "value": "Demo Public Clinic", "type": "text" },
+                { "key": "ownerName", "value": "Dr. Public", "type": "text" },
+                { "key": "email", "value": "publicclinic@example.com", "type": "text" },
+                { "key": "phoneNumber", "value": "9988776655", "type": "text" },
+                { "key": "city", "value": "Mumbai", "type": "text" },
+                { "key": "adminName", "value": "Public Admin", "type": "text" },
+                { "key": "adminEmail", "value": "publicadmin@example.com", "type": "text" },
+                { "key": "password", "value": "Admin@123", "type": "text" },
+                { "key": "clinicType", "value": "general", "type": "text" },
+                { "key": "licenseUpload", "type": "file", "src": "" },
+                { "key": "ownerId", "type": "file", "src": "" },
+                { "key": "logo", "type": "file", "src": "" }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
-      "name": "4. Update Vitals",
-      "request": {
-        "method": "PATCH",
-        "header": [
-          { "key": "Authorization", "value": "Bearer {{token}}" },
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "url": "{{baseUrl}}/api/visits/{{visitId}}/vitals",
-        "body": { "mode": "raw", "raw": "{\n  \"bp\": \"120/80\",\n  \"temperature\": 98.6,\n  \"weight\": 67\n}" }
-      }
+      "name": "Clinic Admin / Staff Accounts",
+      "item": [
+        {
+          "name": "Login Clinic Account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.token) {",
+                  "  pm.collectionVariables.set('clinicToken', json.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/clinic-admin/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"clinicadmin@example.com\",\n  \"password\": \"Admin@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Sub Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/clinic-admin/admins",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sub Admin One\",\n  \"email\": \"subadmin1@example.com\",\n  \"password\": \"Admin@123\",\n  \"permissions\": {\n    \"canRegisterPatient\": true,\n    \"canUpdateOPDPayment\": true\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Staff",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/clinic-admin/staff",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lab Executive\",\n  \"email\": \"labexec@example.com\",\n  \"password\": \"Admin@123\",\n  \"designation\": \"lab\",\n  \"permissions\": {\n    \"canUpdateLabPayment\": true\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "List Clinic Accounts",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/clinic-admin/accounts"
+          }
+        }
+      ]
     },
     {
-      "name": "5. Doctor Consultation",
-      "request": {
-        "method": "PATCH",
-        "header": [
-          { "key": "Authorization", "value": "Bearer {{token}}" },
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "url": "{{baseUrl}}/api/visits/{{visitId}}/consultation",
-        "body": { "mode": "raw", "raw": "{\n  \"title\": \"Viral Fever\",\n  \"description\": \"Body pain and mild fever\",\n  \"parhej\": \"Avoid cold drinks\",\n  \"medicineDays\": 5\n}" }
-      }
+      "name": "Patients",
+      "item": [
+        {
+          "name": "Create Patient",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const pid = json?.data?.patient?._id;",
+                  "if (pid) pm.collectionVariables.set('patientId', pid);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/patients",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"age\": 30,\n  \"gender\": \"male\",\n  \"phone\": \"9999999999\",\n  \"address\": \"Sample Address\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Patients",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/patients"
+          }
+        }
+      ]
     },
     {
-      "name": "6. Add Tests",
-      "request": {
-        "method": "POST",
-        "header": [
-          { "key": "Authorization", "value": "Bearer {{token}}" },
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "url": "{{baseUrl}}/api/visits/{{visitId}}/tests",
-        "body": { "mode": "raw", "raw": "{\n  \"tests\": [\n    { \"name\": \"CBC\" },\n    { \"name\": \"CRP\", \"fee\": 450 }\n  ]\n}" }
-      }
+      "name": "Legacy Payments",
+      "item": [
+        {
+          "name": "Update OPD Payment",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/payments/opd",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"status\": \"paid\",\n  \"amount\": 300,\n  \"note\": \"Collected at reception\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Lab Payment",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/payments/lab",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"status\": \"paid\",\n  \"amount\": 850\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Medical Store Payment",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/payments/medical-store",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"status\": \"pending\",\n  \"amount\": 420\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Patient Payment History",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/payments/patient/{{patientId}}"
+          }
+        }
+      ]
     },
     {
-      "name": "7. Add Medicines",
-      "request": {
-        "method": "POST",
-        "header": [
-          { "key": "Authorization", "value": "Bearer {{token}}" },
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "url": "{{baseUrl}}/api/visits/{{visitId}}/medicines",
-        "body": { "mode": "raw", "raw": "{\n  \"medicines\": [\n    {\n      \"name\": \"Paracetamol 650\",\n      \"timing\": \"after_food\",\n      \"frequencyPerDay\": 2,\n      \"days\": 5\n    }\n  ]\n}" }
-      }
-    },
-    {
-      "name": "8. Update Medicine Billing",
-      "request": {
-        "method": "PATCH",
-        "header": [
-          { "key": "Authorization", "value": "Bearer {{token}}" },
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "url": "{{baseUrl}}/api/visits/{{visitId}}/medicines/{{medicineId}}/billing",
-        "body": { "mode": "raw", "raw": "{\n  \"unitPrice\": 12,\n  \"quantity\": 10,\n  \"paymentStatus\": \"paid\",\n  \"storeStatus\": \"completed\"\n}" }
-      }
-    },
-    {
-      "name": "9. Revisit Due List",
-      "request": {
-        "method": "GET",
-        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-        "url": "{{baseUrl}}/api/visits/revisits/due?date=2026-04-26"
-      }
-    },
-    {
-      "name": "10. Patient Timeline",
-      "request": {
-        "method": "GET",
-        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-        "url": "{{baseUrl}}/api/visits/patient/{{patientId}}/timeline"
-      }
+      "name": "Visit Flow",
+      "item": [
+        {
+          "name": "Book Visit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const vid = json?.data?._id;",
+                  "if (vid) pm.collectionVariables.set('visitId', vid);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/visits/book",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"visitDate\": \"2026-04-21\",\n  \"bookingSource\": \"clinic\",\n  \"visitType\": \"new\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Date Visits",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/visits?date=2026-04-21"
+          }
+        },
+        {
+          "name": "Get Visit By Serial",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/visits/queue/by-serial?date=2026-04-21&serialNo=1"
+          }
+        },
+        {
+          "name": "Update Visit Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/visits/{{visitId}}/status",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"arrived\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Visit OPD Payment",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/visits/{{visitId}}/opd-payment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"paid\",\n  \"amount\": 300\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Vitals",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/visits/{{visitId}}/vitals",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bp\": \"120/80\",\n  \"temperature\": 98.6,\n  \"weight\": 67\n}"
+            }
+          }
+        },
+        {
+          "name": "Save Consultation",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/visits/{{visitId}}/consultation",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Viral Fever\",\n  \"description\": \"Body pain and mild fever\",\n  \"parhej\": \"Avoid cold drinks\",\n  \"medicineDays\": 5\n}"
+            }
+          }
+        },
+        {
+          "name": "Create/Update Test Catalog",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/visits/master/tests",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"CBC\",\n  \"defaultFee\": 450\n}"
+            }
+          }
+        },
+        {
+          "name": "Add Tests",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const tid = json?.data?.[0]?._id;",
+                  "if (tid) pm.collectionVariables.set('testId', tid);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/visits/{{visitId}}/tests",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tests\": [\n    { \"name\": \"CBC\" },\n    { \"name\": \"CRP\", \"fee\": 550, \"notes\": \"Urgent\" }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Test Report (multipart)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/visits/{{visitId}}/tests/{{testId}}/report",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "status", "value": "ready", "type": "text" },
+                { "key": "notes", "value": "Report generated", "type": "text" },
+                { "key": "reportFile", "type": "file", "src": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add Medicines",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const mid = json?.data?.[0]?._id;",
+                  "if (mid) pm.collectionVariables.set('medicineId', mid);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/visits/{{visitId}}/medicines",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medicines\": [\n    {\n      \"name\": \"Paracetamol 650\",\n      \"timing\": \"after_food\",\n      \"frequencyPerDay\": 2,\n      \"days\": 5\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Medicine Billing",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/visits/{{visitId}}/medicines/{{medicineId}}/billing",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unitPrice\": 12,\n  \"quantity\": 10,\n  \"paymentStatus\": \"paid\",\n  \"storeStatus\": \"completed\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Case Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/visits/{{visitId}}/case-status",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"caseStatus\": \"completed\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Revisit Due List",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/visits/revisits/due?date=2026-04-26"
+          }
+        },
+        {
+          "name": "Patient Timeline",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/visits/patient/{{patientId}}/timeline"
+          }
+        },
+        {
+          "name": "Medicine Suggestions",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/visits/master/medicines/suggest?q=para"
+          }
+        },
+        {
+          "name": "Lab Queue",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/visits/queues/lab?date=2026-04-21"
+          }
+        },
+        {
+          "name": "Medical Store Queue",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{clinicToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/visits/queues/medical-store?date=2026-04-21"
+          }
+        }
+      ]
     }
   ]
 }
