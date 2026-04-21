@@ -1,0 +1,128 @@
+{
+  "info": {
+    "name": "Clinic Backend - Visit Flow",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "End-to-end OPD/Doctor/Lab/Medical flow APIs"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "token", "value": "" },
+    { "key": "patientId", "value": "" },
+    { "key": "visitId", "value": "" },
+    { "key": "testId", "value": "" },
+    { "key": "medicineId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Book Visit",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/visits/book",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"visitDate\": \"2026-04-21\",\n  \"bookingSource\": \"clinic\",\n  \"visitType\": \"new\"\n}"
+        }
+      }
+    },
+    {
+      "name": "2. Date Queue",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/api/visits?date=2026-04-21"
+      }
+    },
+    {
+      "name": "3. Update OPD Payment",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/visits/{{visitId}}/opd-payment",
+        "body": { "mode": "raw", "raw": "{\n  \"status\": \"paid\",\n  \"amount\": 300\n}" }
+      }
+    },
+    {
+      "name": "4. Update Vitals",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/visits/{{visitId}}/vitals",
+        "body": { "mode": "raw", "raw": "{\n  \"bp\": \"120/80\",\n  \"temperature\": 98.6,\n  \"weight\": 67\n}" }
+      }
+    },
+    {
+      "name": "5. Doctor Consultation",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/visits/{{visitId}}/consultation",
+        "body": { "mode": "raw", "raw": "{\n  \"title\": \"Viral Fever\",\n  \"description\": \"Body pain and mild fever\",\n  \"parhej\": \"Avoid cold drinks\",\n  \"medicineDays\": 5\n}" }
+      }
+    },
+    {
+      "name": "6. Add Tests",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/visits/{{visitId}}/tests",
+        "body": { "mode": "raw", "raw": "{\n  \"tests\": [\n    { \"name\": \"CBC\" },\n    { \"name\": \"CRP\", \"fee\": 450 }\n  ]\n}" }
+      }
+    },
+    {
+      "name": "7. Add Medicines",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/visits/{{visitId}}/medicines",
+        "body": { "mode": "raw", "raw": "{\n  \"medicines\": [\n    {\n      \"name\": \"Paracetamol 650\",\n      \"timing\": \"after_food\",\n      \"frequencyPerDay\": 2,\n      \"days\": 5\n    }\n  ]\n}" }
+      }
+    },
+    {
+      "name": "8. Update Medicine Billing",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/visits/{{visitId}}/medicines/{{medicineId}}/billing",
+        "body": { "mode": "raw", "raw": "{\n  \"unitPrice\": 12,\n  \"quantity\": 10,\n  \"paymentStatus\": \"paid\",\n  \"storeStatus\": \"completed\"\n}" }
+      }
+    },
+    {
+      "name": "9. Revisit Due List",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/api/visits/revisits/due?date=2026-04-26"
+      }
+    },
+    {
+      "name": "10. Patient Timeline",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/api/visits/patient/{{patientId}}/timeline"
+      }
+    }
+  ]
+}

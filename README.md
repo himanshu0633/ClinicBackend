@@ -1,15 +1,16 @@
-# Clinic Management Backend
+# Clinic Management Backend (MongoDB + Express)
 
-Clinic-only backend with:
-- fixed super admin
-- clinic registration
-- clinic deactivate / auto login block
-- separate models for clinic admins, staff, patients
-- payment permissions by module (OPD, Lab, Medical Store)
-- payment audit logs
+This backend now supports full date-wise OPD flow:
+- patient registration
+- visit booking (self/clinic)
+- date-wise serial queue
+- OPD payment + vitals
+- doctor consultation
+- tests + lab report upload
+- medicines + medical store billing
+- revisit due tracking + case completion
 
 ## Setup
-
 1. Copy `.env.example` to `.env`
 2. Run `npm install`
 3. Run `npm run seed:super-admin`
@@ -19,7 +20,7 @@ Clinic-only backend with:
 - Email: `superadmin@clinicapp.com`
 - Password: `Admin@123`
 
-## Main APIs
+## Existing APIs
 
 ### Super Admin
 - `POST /api/super-admin/login`
@@ -39,11 +40,18 @@ Clinic-only backend with:
 - `POST /api/patients`
 - `GET /api/patients`
 
-### Payments
+### Payments (legacy module)
 - `PATCH /api/payments/opd`
 - `PATCH /api/payments/lab`
 - `PATCH /api/payments/medical-store`
 - `GET /api/payments/patient/:patientId`
+
+## New Visit Flow APIs
+All detailed docs are in:
+- `docs/VISIT_FLOW_AND_APIS.md`
+
+Postman collection:
+- `docs/postman/Clinic-Visit-Flow.postman_collection.json`
 
 ## Registration fields
 Common clinic fields:
@@ -78,25 +86,3 @@ Files:
 - licenseUpload
 - ownerId
 - logo
-
-## Permission idea
-When creating staff/sub-admin, send permissions like:
-```json
-{
-  "canCreateSubAdmins": true,
-  "canRegisterPatient": true,
-  "canUpdateOPDPayment": true,
-  "canUpdateLabPayment": false,
-  "canUpdateMedicalStorePayment": false,
-  "paymentCollectionResponsibility": {
-    "opd": true,
-    "lab": false,
-    "medicalStore": false
-  }
-}
-```
-
-## Notes
-- Clinic login is blocked if clinic is suspended, inactive, login-blocked, or deactivate date has passed.
-- Super admin can force close all logins by updating clinic status or `isLoginBlocked`.
-# ClinicBackend
