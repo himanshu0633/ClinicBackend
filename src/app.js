@@ -9,6 +9,7 @@ const clinicRoutes = require('./routes/clinicRoutes');
 const clinicAdminRoutes = require('./routes/clinicAdminRoutes');
 const patientRoutes = require('./routes/patientRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const visitRoutes = require('./routes/visitRoutes');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/api/clinics', clinicRoutes);
 app.use('/api/clinic-admin', clinicAdminRoutes);
 app.use('/api/patients', patientRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/visits', visitRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
