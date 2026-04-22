@@ -21,26 +21,110 @@
     }
   ],
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:5000" },
-    { "key": "superAdminEmail", "value": "superadmin@clinicapp.com" },
-    { "key": "superAdminPassword", "value": "Admin@123" },
-    { "key": "clinicAdminEmail", "value": "clinicadmin@example.com" },
-    { "key": "clinicAdminPassword", "value": "Admin@123" },
-    { "key": "clinicName", "value": "Flow Demo Clinic" },
-    { "key": "clinicPublicEmail", "value": "flowclinic@example.com" },
-    { "key": "clinicPublicPhone", "value": "9898989811" },
-    { "key": "superAdminToken", "value": "" },
-    { "key": "clinicToken", "value": "" },
-    { "key": "clinicId", "value": "" },
-    { "key": "patientId", "value": "" },
-    { "key": "visitId", "value": "" },
-    { "key": "serialNo", "value": "1" },
-    { "key": "testId", "value": "" },
-    { "key": "medicineId", "value": "" },
-    { "key": "medicineDays", "value": "5" },
-    { "key": "today", "value": "2026-04-22" },
-    { "key": "followUpDate", "value": "2026-04-27" },
-    { "key": "revisitDate", "value": "2026-04-29" }
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000"
+    },
+    {
+      "key": "superAdminEmail",
+      "value": "superadmin@clinicapp.com"
+    },
+    {
+      "key": "superAdminPassword",
+      "value": "Admin@123"
+    },
+    {
+      "key": "clinicAdminEmail",
+      "value": "clinicadmin@example.com"
+    },
+    {
+      "key": "clinicAdminPassword",
+      "value": "Admin@123"
+    },
+    {
+      "key": "clinicName",
+      "value": "Flow Demo Clinic"
+    },
+    {
+      "key": "clinicPublicEmail",
+      "value": "flowclinic@example.com"
+    },
+    {
+      "key": "clinicPublicPhone",
+      "value": "9898989811"
+    },
+    {
+      "key": "superAdminToken",
+      "value": ""
+    },
+    {
+      "key": "clinicToken",
+      "value": ""
+    },
+    {
+      "key": "clinicId",
+      "value": ""
+    },
+    {
+      "key": "patientId",
+      "value": ""
+    },
+    {
+      "key": "visitId",
+      "value": ""
+    },
+    {
+      "key": "serialNo",
+      "value": "1"
+    },
+    {
+      "key": "testId",
+      "value": ""
+    },
+    {
+      "key": "medicineId",
+      "value": ""
+    },
+    {
+      "key": "medicineDays",
+      "value": "5"
+    },
+    {
+      "key": "today",
+      "value": "2026-04-22"
+    },
+    {
+      "key": "followUpDate",
+      "value": "2026-04-27"
+    },
+    {
+      "key": "revisitDate",
+      "value": "2026-04-29"
+    },
+    {
+      "key": "doctor1Email",
+      "value": "doctor.one@example.com"
+    },
+    {
+      "key": "doctor1Password",
+      "value": "Doc@123"
+    },
+    {
+      "key": "doctor2Email",
+      "value": "doctor.two@example.com"
+    },
+    {
+      "key": "doctor2Password",
+      "value": "Doc@123"
+    },
+    {
+      "key": "doctor1Id",
+      "value": ""
+    },
+    {
+      "key": "doctor2Id",
+      "value": ""
+    }
   ],
   "item": [
     {
@@ -61,29 +145,136 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "clinicName", "value": "{{clinicName}}", "type": "text" },
-                { "key": "ownerName", "value": "Dr Flow Owner", "type": "text" },
-                { "key": "email", "value": "{{clinicPublicEmail}}", "type": "text" },
-                { "key": "phoneNumber", "value": "{{clinicPublicPhone}}", "type": "text" },
-                { "key": "registrationNumber", "value": "FLOW-REG-001", "type": "text" },
-                { "key": "address", "value": "Main Road", "type": "text" },
-                { "key": "country", "value": "India", "type": "text" },
-                { "key": "state", "value": "Maharashtra", "type": "text" },
-                { "key": "city", "value": "Pune", "type": "text" },
-                { "key": "fullAddress", "value": "Main Road, Pune", "type": "text" },
-                { "key": "pincode", "value": "411001", "type": "text" },
-                { "key": "adminName", "value": "Clinic Admin", "type": "text" },
-                { "key": "adminEmail", "value": "{{clinicAdminEmail}}", "type": "text" },
-                { "key": "password", "value": "{{clinicAdminPassword}}", "type": "text" },
-                { "key": "subscriptionPlan", "value": "premium", "type": "text" },
-                { "key": "clinicType", "value": "general", "type": "text" },
-                { "key": "doctorCount", "value": "2", "type": "text" },
-                { "key": "staffCount", "value": "5", "type": "text" },
-                { "key": "consultationFee", "value": "300", "type": "text" },
-                { "key": "openingHours", "value": "09:00-19:00", "type": "text" },
-                { "key": "hasOPD", "value": "true", "type": "text" },
-                { "key": "hasLab", "value": "true", "type": "text" },
-                { "key": "hasMedicalStore", "value": "true", "type": "text" }
+                {
+                  "key": "clinicName",
+                  "value": "{{clinicName}}",
+                  "type": "text"
+                },
+                {
+                  "key": "ownerName",
+                  "value": "Dr Flow Owner",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{clinicPublicEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "phoneNumber",
+                  "value": "{{clinicPublicPhone}}",
+                  "type": "text"
+                },
+                {
+                  "key": "registrationNumber",
+                  "value": "FLOW-REG-001",
+                  "type": "text"
+                },
+                {
+                  "key": "address",
+                  "value": "Main Road",
+                  "type": "text"
+                },
+                {
+                  "key": "country",
+                  "value": "India",
+                  "type": "text"
+                },
+                {
+                  "key": "state",
+                  "value": "Maharashtra",
+                  "type": "text"
+                },
+                {
+                  "key": "city",
+                  "value": "Pune",
+                  "type": "text"
+                },
+                {
+                  "key": "fullAddress",
+                  "value": "Main Road, Pune",
+                  "type": "text"
+                },
+                {
+                  "key": "pincode",
+                  "value": "411001",
+                  "type": "text"
+                },
+                {
+                  "key": "adminName",
+                  "value": "Clinic Admin",
+                  "type": "text"
+                },
+                {
+                  "key": "adminEmail",
+                  "value": "{{clinicAdminEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{clinicAdminPassword}}",
+                  "type": "text"
+                },
+                {
+                  "key": "subscriptionPlan",
+                  "value": "premium",
+                  "type": "text"
+                },
+                {
+                  "key": "clinicType",
+                  "value": "General Clinic",
+                  "type": "text"
+                },
+                {
+                  "key": "doctorCount",
+                  "value": "2",
+                  "type": "text"
+                },
+                {
+                  "key": "staffCount",
+                  "value": "5",
+                  "type": "text"
+                },
+                {
+                  "key": "consultationFee",
+                  "value": "300",
+                  "type": "text"
+                },
+                {
+                  "key": "openingHours",
+                  "value": "09:00-19:00",
+                  "type": "text"
+                },
+                {
+                  "key": "hasOPD",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "hasLab",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "hasMedicalStore",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "consultationFeeSameForAllDoctors",
+                  "value": "false",
+                  "type": "text"
+                },
+                {
+                  "key": "openingHoursSameForAllDoctors",
+                  "value": "false",
+                  "type": "text"
+                },
+                {
+                  "key": "doctors",
+                  "value": "[{\"name\":\"Dr One\",\"email\":\"{{doctor1Email}}\",\"phoneNumber\":\"9000000001\",\"password\":\"{{doctor1Password}}\",\"consultationFee\":300,\"openingHours\":\"09:00-13:00\"},{\"name\":\"Dr Two\",\"email\":\"{{doctor2Email}}\",\"phoneNumber\":\"9000000002\",\"password\":\"{{doctor2Password}}\",\"consultationFee\":500,\"openingHours\":\"14:00-20:00\"}]",
+                  "type": "text"
+                }
               ]
             }
           }
@@ -104,7 +295,12 @@
           ],
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": "{{baseUrl}}/api/super-admin/login",
             "body": {
               "mode": "raw",
@@ -116,34 +312,146 @@
           "name": "Register Clinic (By Super Admin)",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Authorization", "value": "Bearer {{superAdminToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{superAdminToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/api/super-admin/clinics/register",
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "clinicName", "value": "{{clinicName}}", "type": "text" },
-                { "key": "ownerName", "value": "Dr Flow Owner", "type": "text" },
-                { "key": "email", "value": "{{clinicPublicEmail}}", "type": "text" },
-                { "key": "phoneNumber", "value": "{{clinicPublicPhone}}", "type": "text" },
-                { "key": "registrationNumber", "value": "FLOW-REG-001", "type": "text" },
-                { "key": "address", "value": "Main Road", "type": "text" },
-                { "key": "country", "value": "India", "type": "text" },
-                { "key": "state", "value": "Maharashtra", "type": "text" },
-                { "key": "city", "value": "Pune", "type": "text" },
-                { "key": "fullAddress", "value": "Main Road, Pune", "type": "text" },
-                { "key": "pincode", "value": "411001", "type": "text" },
-                { "key": "adminName", "value": "Clinic Admin", "type": "text" },
-                { "key": "adminEmail", "value": "{{clinicAdminEmail}}", "type": "text" },
-                { "key": "password", "value": "{{clinicAdminPassword}}", "type": "text" },
-                { "key": "subscriptionPlan", "value": "premium", "type": "text" },
-                { "key": "clinicType", "value": "general", "type": "text" },
-                { "key": "doctorCount", "value": "2", "type": "text" },
-                { "key": "staffCount", "value": "5", "type": "text" },
-                { "key": "consultationFee", "value": "300", "type": "text" },
-                { "key": "openingHours", "value": "09:00-19:00", "type": "text" },
-                { "key": "hasOPD", "value": "true", "type": "text" },
-                { "key": "hasLab", "value": "true", "type": "text" },
-                { "key": "hasMedicalStore", "value": "true", "type": "text" }
+                {
+                  "key": "clinicName",
+                  "value": "{{clinicName}}",
+                  "type": "text"
+                },
+                {
+                  "key": "ownerName",
+                  "value": "Dr Flow Owner",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "{{clinicPublicEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "phoneNumber",
+                  "value": "{{clinicPublicPhone}}",
+                  "type": "text"
+                },
+                {
+                  "key": "registrationNumber",
+                  "value": "FLOW-REG-001",
+                  "type": "text"
+                },
+                {
+                  "key": "address",
+                  "value": "Main Road",
+                  "type": "text"
+                },
+                {
+                  "key": "country",
+                  "value": "India",
+                  "type": "text"
+                },
+                {
+                  "key": "state",
+                  "value": "Maharashtra",
+                  "type": "text"
+                },
+                {
+                  "key": "city",
+                  "value": "Pune",
+                  "type": "text"
+                },
+                {
+                  "key": "fullAddress",
+                  "value": "Main Road, Pune",
+                  "type": "text"
+                },
+                {
+                  "key": "pincode",
+                  "value": "411001",
+                  "type": "text"
+                },
+                {
+                  "key": "adminName",
+                  "value": "Clinic Admin",
+                  "type": "text"
+                },
+                {
+                  "key": "adminEmail",
+                  "value": "{{clinicAdminEmail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{clinicAdminPassword}}",
+                  "type": "text"
+                },
+                {
+                  "key": "subscriptionPlan",
+                  "value": "premium",
+                  "type": "text"
+                },
+                {
+                  "key": "clinicType",
+                  "value": "General Clinic",
+                  "type": "text"
+                },
+                {
+                  "key": "doctorCount",
+                  "value": "2",
+                  "type": "text"
+                },
+                {
+                  "key": "staffCount",
+                  "value": "5",
+                  "type": "text"
+                },
+                {
+                  "key": "consultationFee",
+                  "value": "300",
+                  "type": "text"
+                },
+                {
+                  "key": "openingHours",
+                  "value": "09:00-19:00",
+                  "type": "text"
+                },
+                {
+                  "key": "hasOPD",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "hasLab",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "hasMedicalStore",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "consultationFeeSameForAllDoctors",
+                  "value": "false",
+                  "type": "text"
+                },
+                {
+                  "key": "openingHoursSameForAllDoctors",
+                  "value": "false",
+                  "type": "text"
+                },
+                {
+                  "key": "doctors",
+                  "value": "[{\"name\":\"Dr One\",\"email\":\"{{doctor1Email}}\",\"phoneNumber\":\"9000000001\",\"password\":\"{{doctor1Password}}\",\"consultationFee\":300,\"openingHours\":\"09:00-13:00\"},{\"name\":\"Dr Two\",\"email\":\"{{doctor2Email}}\",\"phoneNumber\":\"9000000002\",\"password\":\"{{doctor2Password}}\",\"consultationFee\":500,\"openingHours\":\"14:00-20:00\"}]",
+                  "type": "text"
+                }
               ]
             }
           }
@@ -165,7 +473,12 @@
           ],
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{superAdminToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{superAdminToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/api/super-admin/clinics"
           }
         },
@@ -185,12 +498,44 @@
           ],
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": "{{baseUrl}}/api/clinic-admin/login",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{clinicAdminEmail}}\",\n  \"password\": \"{{clinicAdminPassword}}\"\n}"
             }
+          }
+        },
+        {
+          "name": "Get Accounts (Capture Doctors)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const doctors = (json?.data?.staff || []).filter((s) => s.designation === \"doctor\");",
+                  "if (doctors[0]?._id) pm.collectionVariables.set(\"doctor1Id\", doctors[0]._id);",
+                  "if (doctors[1]?._id) pm.collectionVariables.set(\"doctor2Id\", doctors[1]._id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/clinic-admin/accounts"
           }
         }
       ]
@@ -216,8 +561,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/patients",
             "body": {
@@ -230,7 +581,12 @@
           "name": "Get Patients",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{clinicToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/api/patients"
           }
         }
@@ -258,13 +614,19 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/book",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"visitDate\": \"{{today}}\",\n  \"bookingSource\": \"clinic\",\n  \"visitType\": \"new\"\n}"
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"visitDate\": \"{{today}}\",\n  \"doctorId\": \"{{doctor1Id}}\",\n  \"visitType\": \"new\"\n}"
             }
           }
         },
@@ -272,7 +634,12 @@
           "name": "Get Date Visits",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{clinicToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/api/visits?date={{today}}"
           }
         },
@@ -280,7 +647,12 @@
           "name": "Get Visit By Serial",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{clinicToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/api/visits/queue/by-serial?date={{today}}&serialNo={{serialNo}}"
           }
         },
@@ -289,8 +661,14 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/{{visitId}}/status",
             "body": {
@@ -309,8 +687,14 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/{{visitId}}/opd-payment",
             "body": {
@@ -324,8 +708,14 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/{{visitId}}/vitals",
             "body": {
@@ -339,8 +729,14 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/{{visitId}}/status",
             "body": {
@@ -359,8 +755,14 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/{{visitId}}/consultation",
             "body": {
@@ -374,8 +776,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/master/tests",
             "body": {
@@ -407,8 +815,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/{{visitId}}/tests",
             "body": {
@@ -421,7 +835,12 @@
           "name": "Lab Queue",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{clinicToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/api/visits/queues/lab?date={{today}}"
           }
         },
@@ -429,14 +848,31 @@
           "name": "Update Test Report (multipart)",
           "request": {
             "method": "PATCH",
-            "header": [{ "key": "Authorization", "value": "Bearer {{clinicToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/api/visits/{{visitId}}/tests/{{testId}}/report",
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "status", "value": "ready", "type": "text" },
-                { "key": "notes", "value": "Report generated", "type": "text" },
-                { "key": "reportFile", "type": "file", "src": "" }
+                {
+                  "key": "status",
+                  "value": "ready",
+                  "type": "text"
+                },
+                {
+                  "key": "notes",
+                  "value": "Report generated",
+                  "type": "text"
+                },
+                {
+                  "key": "reportFile",
+                  "type": "file",
+                  "src": ""
+                }
               ]
             }
           }
@@ -464,8 +900,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/{{visitId}}/medicines",
             "body": {
@@ -478,7 +920,12 @@
           "name": "Medicine Suggestion",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{clinicToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/api/visits/master/medicines/suggest?q=para"
           }
         },
@@ -486,7 +933,12 @@
           "name": "Medical Store Queue",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{clinicToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/api/visits/queues/medical-store?date={{today}}"
           }
         },
@@ -495,8 +947,14 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/{{visitId}}/medicines/{{medicineId}}/billing",
             "body": {
@@ -515,8 +973,14 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/{{visitId}}/case-status",
             "body": {
@@ -529,7 +993,12 @@
           "name": "Revisit Due List",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{clinicToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/api/visits/revisits/due?date={{followUpDate}}"
           }
         },
@@ -537,7 +1006,12 @@
           "name": "Patient Timeline",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{clinicToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/api/visits/patient/{{patientId}}/timeline"
           }
         },
@@ -546,8 +1020,14 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/{{visitId}}/case-status",
             "body": {
@@ -561,8 +1041,14 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{clinicToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{clinicToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "url": "{{baseUrl}}/api/visits/{{visitId}}/status",
             "body": {
