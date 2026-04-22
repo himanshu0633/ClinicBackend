@@ -74,10 +74,11 @@
 - APIs are clinic-scoped and only return current clinic data.
 - Dates are normalized in UTC midnight for day-wise grouping.
 - Serial number is generated as: `count(visits on date) + 1`.
+- `POST /api/patients` supports optional `email`; if provided, patient receives registration and consultation-summary emails.
+- Account creation APIs (`/api/clinics/register`, `/api/super-admin/clinics/register`, `/api/clinic-admin/admins`, `/api/clinic-admin/staff`) trigger credential emails when SMTP is configured.
 
 ## Key MongoDB Collections
 - `patients`
 - `visits`
 - `testcatalogs`
 - `medicinemasters`
-

@@ -573,7 +573,7 @@
             "url": "{{baseUrl}}/api/patients",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Flow Demo Patient\",\n  \"age\": 31,\n  \"gender\": \"male\",\n  \"phone\": \"9898989898\",\n  \"address\": \"Flow Street\"\n}"
+              "raw": "{\n  \"name\": \"Flow Demo Patient\",\n  \"age\": 31,\n  \"gender\": \"male\",\n  \"email\": \"patient.flow@example.com\",\n  \"phone\": \"9898989898\",\n  \"address\": \"Flow Street\"\n}"
             }
           }
         },
