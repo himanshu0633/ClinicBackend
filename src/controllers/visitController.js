@@ -1,5 +1,6 @@
 const Patient = require('../models/Patient');
 const Visit = require('../models/Visit');
+const Staff = require('../models/Staff');
 const TestCatalog = require('../models/TestCatalog');
 const MedicineMaster = require('../models/MedicineMaster');
 
@@ -19,7 +20,7 @@ function getDayRange(dateValue) {
 }
 
 async function bookVisit(req, res) {
-  const { patientId, visitDate, bookingSource = 'clinic', visitType = 'new' } = req.body;
+  const { patientId, visitDate, doctorId, bookingSource = 'clinic', visitType = 'new' } = req.body;
   if (!patientId || !visitDate) {
     return res.status(400).json({ success: false, message: 'patientId and visitDate are required' });
   }
@@ -45,6 +46,19 @@ async function bookVisit(req, res) {
     previousOpenVisitId = previousOpenVisit?._id || null;
   }
 
+  let selectedDoctor = null;
+  if (doctorId) {
+    selectedDoctor = await Staff.findOne({
+      _id: doctorId,
+      clinicId: req.clinic._id,
+      designation: 'doctor',
+      status: 'active'
+    });
+    if (!selectedDoctor) {
+      return res.status(404).json({ success: false, message: 'Doctor not found' });
+    }
+  }
+
   const visit = await Visit.create({
     clinicId: req.clinic._id,
     patientId: patient._id,
@@ -55,9 +69,13 @@ async function bookVisit(req, res) {
     bookedBy: req.user._id,
     bookedByModel: req.userType === 'clinic_admin' ? 'ClinicAdmin' : 'Staff',
     opdPayment: {
-      amount: Number(req.clinic?.clinicDetails?.consultationFee) || 0,
+      amount: selectedDoctor ? (Number(selectedDoctor.consultationFee) || 0) : (Number(req.clinic?.clinicDetails?.consultationFee) || 0),
       status: 'pending'
     },
+    consultation: selectedDoctor ? {
+      doctor: selectedDoctor._id,
+      doctorName: selectedDoctor.name
+    } : undefined,
     previousOpenVisitId
   });
 

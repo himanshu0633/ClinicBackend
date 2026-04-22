@@ -68,8 +68,11 @@ async function createSubAdmin(req, res) {
 }
 
 async function createStaff(req, res) {
-  const { name, email, password, designation, permissions = {} } = req.body;
+  const { name, email, password, phoneNumber, designation, consultationFee, openingHours, permissions = {} } = req.body;
   if (!name || !email || !password) return res.status(400).json({ success: false, message: 'Name, email and password are required' });
+  if ((designation || 'other') === 'doctor' && !phoneNumber) {
+    return res.status(400).json({ success: false, message: 'phoneNumber is required for doctor' });
+  }
 
   const exists = await Staff.findOne({ email: email.toLowerCase() });
   if (exists) return res.status(400).json({ success: false, message: 'Email already exists' });
@@ -80,8 +83,11 @@ async function createStaff(req, res) {
     code,
     name,
     email: email.toLowerCase(),
+    phoneNumber: phoneNumber || '',
     password,
     designation: designation || 'other',
+    consultationFee: consultationFee !== undefined ? Number(consultationFee) : 0,
+    openingHours: openingHours || '',
     permissions,
     createdBy: req.user._id,
     createdByModel: req.userType === 'clinic_admin' ? 'ClinicAdmin' : 'Staff'

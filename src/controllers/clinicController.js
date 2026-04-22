@@ -1,5 +1,6 @@
 const Clinic = require('../models/Clinic');
 const ClinicAdmin = require('../models/ClinicAdmin');
+const Staff = require('../models/Staff');
 const { generateEntityCode } = require('../utils/codeGenerator');
 
 function calculateExpiryDate(plan) {
@@ -32,6 +33,9 @@ async function registerClinic(req, res) {
     staffCount,
     consultationFee,
     openingHours,
+    doctors,
+    consultationFeeSameForAllDoctors,
+    openingHoursSameForAllDoctors,
     hasOPD,
     hasLab,
     hasMedicalStore,
@@ -44,6 +48,84 @@ async function registerClinic(req, res) {
 
   const existingAdmin = await ClinicAdmin.findOne({ email: adminEmail.toLowerCase() });
   if (existingAdmin) return res.status(400).json({ success: false, message: 'Admin email already exists' });
+
+  const parsedDoctorCount = Number(doctorCount) || 0;
+  let doctorEntries = [];
+  if (doctors) {
+    if (Array.isArray(doctors)) {
+      doctorEntries = doctors;
+    } else if (typeof doctors === 'string') {
+      try {
+        doctorEntries = JSON.parse(doctors);
+      } catch (error) {
+        return res.status(400).json({ success: false, message: 'Invalid doctors format. Use valid JSON array' });
+      }
+    }
+  }
+
+  if (parsedDoctorCount > 0) {
+    if (!Array.isArray(doctorEntries) || doctorEntries.length !== parsedDoctorCount) {
+      return res.status(400).json({
+        success: false,
+        message: `doctors array with exactly ${parsedDoctorCount} entries is required`
+      });
+    }
+  }
+
+  const isConsultationFeeSame = consultationFeeSameForAllDoctors === 'true' || consultationFeeSameForAllDoctors === true;
+  const isOpeningHoursSame = openingHoursSameForAllDoctors === 'true' || openingHoursSameForAllDoctors === true;
+
+  const normalizedDoctors = [];
+  for (const doctor of doctorEntries) {
+    const doctorName = String(doctor?.name || '').trim();
+    const doctorEmail = String(doctor?.email || '').trim().toLowerCase();
+    const doctorPassword = String(doctor?.password || '').trim();
+    const doctorPhoneNumber = String(doctor?.phoneNumber || '').trim();
+
+    if (!doctorName || !doctorEmail || !doctorPhoneNumber || !doctorPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Each doctor must include name, email, phoneNumber and password'
+      });
+    }
+
+    const emailExists = await Promise.all([
+      ClinicAdmin.findOne({ email: doctorEmail }),
+      Staff.findOne({ email: doctorEmail })
+    ]);
+    if (emailExists[0] || emailExists[1]) {
+      return res.status(400).json({ success: false, message: `Doctor email already exists: ${doctorEmail}` });
+    }
+
+    const doctorConsultationFee = isConsultationFeeSame
+      ? Number(consultationFee) || 0
+      : Number(doctor?.consultationFee);
+    const doctorOpeningHours = isOpeningHoursSame
+      ? (openingHours || '').trim()
+      : String(doctor?.openingHours || '').trim();
+
+    if (!isConsultationFeeSame && Number.isNaN(doctorConsultationFee)) {
+      return res.status(400).json({
+        success: false,
+        message: `consultationFee is required for doctor ${doctorName}`
+      });
+    }
+    if (!isOpeningHoursSame && !doctorOpeningHours) {
+      return res.status(400).json({
+        success: false,
+        message: `openingHours is required for doctor ${doctorName}`
+      });
+    }
+
+    normalizedDoctors.push({
+      name: doctorName,
+      email: doctorEmail,
+      phoneNumber: doctorPhoneNumber,
+      password: doctorPassword,
+      consultationFee: doctorConsultationFee,
+      openingHours: doctorOpeningHours
+    });
+  }
 
   const files = req.files || {};
   const documents = {
@@ -73,7 +155,7 @@ async function registerClinic(req, res) {
     createdBySuperAdmin: req.superAdmin?._id || null,
     clinicDetails: {
       clinicType,
-      doctorCount: Number(doctorCount) || 0,
+      doctorCount: parsedDoctorCount,
       staffCount: Number(staffCount) || 0,
       consultationFee: Number(consultationFee) || 0,
       openingHours: openingHours || '',
@@ -107,12 +189,40 @@ async function registerClinic(req, res) {
     }
   });
 
+  const createdDoctors = [];
+  for (const doctor of normalizedDoctors) {
+    const doctorCode = await generateEntityCode(Staff, doctor.name, city, 'DOC');
+    const savedDoctor = await Staff.create({
+      clinicId: clinic._id,
+      code: doctorCode,
+      name: doctor.name,
+      email: doctor.email,
+      phoneNumber: doctor.phoneNumber,
+      password: doctor.password,
+      designation: 'doctor',
+      consultationFee: doctor.consultationFee,
+      openingHours: doctor.openingHours,
+      createdBy: admin._id,
+      createdByModel: 'ClinicAdmin'
+    });
+    createdDoctors.push({
+      id: savedDoctor._id,
+      code: savedDoctor.code,
+      name: savedDoctor.name,
+      email: savedDoctor.email,
+      phoneNumber: savedDoctor.phoneNumber,
+      consultationFee: savedDoctor.consultationFee,
+      openingHours: savedDoctor.openingHours
+    });
+  }
+
   res.status(201).json({
     success: true,
     message: 'Clinic registered successfully',
     data: {
       clinic,
-      admin: { id: admin._id, code: admin.code, name: admin.name, email: admin.email, role: admin.role }
+      admin: { id: admin._id, code: admin.code, name: admin.name, email: admin.email, role: admin.role },
+      doctors: createdDoctors
     }
   });
 }
