@@ -3,6 +3,7 @@ const Visit = require('../models/Visit');
 const Staff = require('../models/Staff');
 const TestCatalog = require('../models/TestCatalog');
 const MedicineMaster = require('../models/MedicineMaster');
+const { sendEmail } = require('../utils/mailer');
 
 function parseVisitDate(dateValue) {
   const date = new Date(dateValue);
@@ -17,6 +18,47 @@ function getDayRange(dateValue) {
   const end = new Date(start);
   end.setUTCDate(end.getUTCDate() + 1);
   return { start, end };
+}
+
+async function sendVisitSummaryEmail({ visit, clinic, patient }) {
+  if (!patient?.email) return;
+
+  const medicines = (visit.medicines || []).map((item) => (
+    `- ${item.name} (${item.days} day, ${item.frequencyPerDay} time/day, ${item.timing})`
+  ));
+
+  const tests = (visit.tests || []).map((item) => {
+    const report = item.reportFile ? `, report: ${item.reportFile}` : '';
+    return `- ${item.name} [${item.status}]${report}`;
+  });
+
+  const text = [
+    `Hello ${patient.name},`,
+    '',
+    `Your consultation details have been updated by Dr. ${visit.consultation?.doctorName || ''}.`,
+    `Clinic: ${clinic.clinicName}`,
+    `Visit Date: ${new Date(visit.visitDate).toISOString().slice(0, 10)}`,
+    '',
+    `Diagnosis: ${visit.consultation?.title || 'N/A'}`,
+    `Notes: ${visit.consultation?.description || 'N/A'}`,
+    `Parhej: ${visit.consultation?.parhej || 'N/A'}`,
+    '',
+    'Medicines:',
+    medicines.length ? medicines.join('\n') : '- No medicine added',
+    '',
+    'Tests:',
+    tests.length ? tests.join('\n') : '- No test added'
+  ].join('\n');
+
+  const result = await sendEmail({
+    to: patient.email,
+    subject: `Visit Summary - ${clinic.clinicName}`,
+    text
+  });
+
+  if (!result.success && !result.skipped) {
+    console.warn(`Visit summary email failed for ${patient.email}: ${result.error}`);
+  }
 }
 
 async function bookVisit(req, res) {
@@ -198,6 +240,9 @@ async function saveConsultation(req, res) {
   visit.consultation.doctorName = req.user.name || '';
 
   await visit.save();
+
+  const patient = await Patient.findById(visit.patientId).select('name email');
+  await sendVisitSummaryEmail({ visit, clinic: req.clinic, patient });
 
   res.json({ success: true, message: 'Consultation saved', data: visit });
 }

@@ -2,6 +2,7 @@ const Clinic = require('../models/Clinic');
 const ClinicAdmin = require('../models/ClinicAdmin');
 const Staff = require('../models/Staff');
 const { generateEntityCode } = require('../utils/codeGenerator');
+const { sendEmail } = require('../utils/mailer');
 
 function calculateExpiryDate(plan) {
   const date = new Date();
@@ -9,6 +10,28 @@ function calculateExpiryDate(plan) {
   else if (plan === 'premium') date.setDate(date.getDate() + 365);
   else date.setDate(date.getDate() + 30);
   return date;
+}
+
+async function sendCredentialsEmail({ to, name, clinicName, role, password }) {
+  const message = [
+    `Hello ${name || 'User'},`,
+    '',
+    `Your ${role} account has been created for ${clinicName}.`,
+    `Login Email: ${to}`,
+    `Password: ${password}`,
+    '',
+    'Please change your password after first login.'
+  ].join('\n');
+
+  const result = await sendEmail({
+    to,
+    subject: `Account Created - ${clinicName}`,
+    text: message
+  });
+
+  if (!result.success && !result.skipped) {
+    console.warn(`Credential email failed for ${to}: ${result.error}`);
+  }
 }
 
 async function registerClinic(req, res) {
@@ -188,6 +211,13 @@ async function registerClinic(req, res) {
       }
     }
   });
+  await sendCredentialsEmail({
+    to: admin.email,
+    name: admin.name,
+    clinicName: clinic.clinicName,
+    role: 'clinic admin',
+    password
+  });
 
   const createdDoctors = [];
   for (const doctor of normalizedDoctors) {
@@ -213,6 +243,13 @@ async function registerClinic(req, res) {
       phoneNumber: savedDoctor.phoneNumber,
       consultationFee: savedDoctor.consultationFee,
       openingHours: savedDoctor.openingHours
+    });
+    await sendCredentialsEmail({
+      to: savedDoctor.email,
+      name: savedDoctor.name,
+      clinicName: clinic.clinicName,
+      role: 'doctor',
+      password: doctor.password
     });
   }
 

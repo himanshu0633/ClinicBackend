@@ -7,6 +7,7 @@ const schema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
   age: { type: Number, default: 0 },
   gender: { type: String, enum: ['male', 'female', 'other'], default: 'other' },
+  email: { type: String, trim: true, lowercase: true },
   phone: { type: String, trim: true },
   address: { type: String, trim: true },
   registeredBy: { type: mongoose.Schema.Types.ObjectId, refPath: 'registeredByModel' },

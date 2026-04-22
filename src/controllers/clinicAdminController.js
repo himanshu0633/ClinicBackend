@@ -3,6 +3,28 @@ const ClinicAdmin = require('../models/ClinicAdmin');
 const Staff = require('../models/Staff');
 const generateToken = require('../utils/generateToken');
 const { generateEntityCode } = require('../utils/codeGenerator');
+const { sendEmail } = require('../utils/mailer');
+
+async function sendCredentialsEmail({ to, name, clinicName, role, password }) {
+  const text = [
+    `Hello ${name || 'User'},`,
+    '',
+    `Your ${role} account has been created for ${clinicName}.`,
+    `Login Email: ${to}`,
+    `Password: ${password}`,
+    '',
+    'Please update your password after login.'
+  ].join('\n');
+
+  const result = await sendEmail({
+    to,
+    subject: `Account Created - ${clinicName}`,
+    text
+  });
+  if (!result.success && !result.skipped) {
+    console.warn(`Credential email failed for ${to}: ${result.error}`);
+  }
+}
 
 async function loginClinicAccount(req, res) {
   const { email, password } = req.body;
@@ -63,6 +85,13 @@ async function createSubAdmin(req, res) {
     createdBy: req.user._id,
     createdByModel: req.userType === 'clinic_admin' ? 'ClinicAdmin' : 'Staff'
   });
+  await sendCredentialsEmail({
+    to: admin.email,
+    name: admin.name,
+    clinicName: req.clinic.clinicName,
+    role: 'sub admin',
+    password
+  });
 
   res.status(201).json({ success: true, message: 'Sub admin created successfully', data: admin });
 }
@@ -91,6 +120,13 @@ async function createStaff(req, res) {
     permissions,
     createdBy: req.user._id,
     createdByModel: req.userType === 'clinic_admin' ? 'ClinicAdmin' : 'Staff'
+  });
+  await sendCredentialsEmail({
+    to: staff.email,
+    name: staff.name,
+    clinicName: req.clinic.clinicName,
+    role: staff.designation || 'staff',
+    password
   });
 
   res.status(201).json({ success: true, message: 'Staff created successfully', data: staff });
