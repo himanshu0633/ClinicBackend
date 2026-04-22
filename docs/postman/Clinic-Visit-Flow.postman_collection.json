@@ -26,6 +26,9 @@
     { "key": "superAdminPassword", "value": "Admin@123" },
     { "key": "clinicAdminEmail", "value": "clinicadmin@example.com" },
     { "key": "clinicAdminPassword", "value": "Admin@123" },
+    { "key": "clinicName", "value": "Flow Demo Clinic" },
+    { "key": "clinicPublicEmail", "value": "flowclinic@example.com" },
+    { "key": "clinicPublicPhone", "value": "9898989811" },
     { "key": "superAdminToken", "value": "" },
     { "key": "clinicToken", "value": "" },
     { "key": "clinicId", "value": "" },
@@ -51,6 +54,41 @@
           }
         },
         {
+          "name": "Register Clinic (Public Route)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/clinics/register",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "clinicName", "value": "{{clinicName}}", "type": "text" },
+                { "key": "ownerName", "value": "Dr Flow Owner", "type": "text" },
+                { "key": "email", "value": "{{clinicPublicEmail}}", "type": "text" },
+                { "key": "phoneNumber", "value": "{{clinicPublicPhone}}", "type": "text" },
+                { "key": "registrationNumber", "value": "FLOW-REG-001", "type": "text" },
+                { "key": "address", "value": "Main Road", "type": "text" },
+                { "key": "country", "value": "India", "type": "text" },
+                { "key": "state", "value": "Maharashtra", "type": "text" },
+                { "key": "city", "value": "Pune", "type": "text" },
+                { "key": "fullAddress", "value": "Main Road, Pune", "type": "text" },
+                { "key": "pincode", "value": "411001", "type": "text" },
+                { "key": "adminName", "value": "Clinic Admin", "type": "text" },
+                { "key": "adminEmail", "value": "{{clinicAdminEmail}}", "type": "text" },
+                { "key": "password", "value": "{{clinicAdminPassword}}", "type": "text" },
+                { "key": "subscriptionPlan", "value": "premium", "type": "text" },
+                { "key": "clinicType", "value": "general", "type": "text" },
+                { "key": "doctorCount", "value": "2", "type": "text" },
+                { "key": "staffCount", "value": "5", "type": "text" },
+                { "key": "consultationFee", "value": "300", "type": "text" },
+                { "key": "openingHours", "value": "09:00-19:00", "type": "text" },
+                { "key": "hasOPD", "value": "true", "type": "text" },
+                { "key": "hasLab", "value": "true", "type": "text" },
+                { "key": "hasMedicalStore", "value": "true", "type": "text" }
+              ]
+            }
+          }
+        },
+        {
           "name": "Super Admin Login",
           "event": [
             {
@@ -71,6 +109,42 @@
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{superAdminEmail}}\",\n  \"password\": \"{{superAdminPassword}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Register Clinic (By Super Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{superAdminToken}}" }],
+            "url": "{{baseUrl}}/api/super-admin/clinics/register",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "clinicName", "value": "{{clinicName}}", "type": "text" },
+                { "key": "ownerName", "value": "Dr Flow Owner", "type": "text" },
+                { "key": "email", "value": "{{clinicPublicEmail}}", "type": "text" },
+                { "key": "phoneNumber", "value": "{{clinicPublicPhone}}", "type": "text" },
+                { "key": "registrationNumber", "value": "FLOW-REG-001", "type": "text" },
+                { "key": "address", "value": "Main Road", "type": "text" },
+                { "key": "country", "value": "India", "type": "text" },
+                { "key": "state", "value": "Maharashtra", "type": "text" },
+                { "key": "city", "value": "Pune", "type": "text" },
+                { "key": "fullAddress", "value": "Main Road, Pune", "type": "text" },
+                { "key": "pincode", "value": "411001", "type": "text" },
+                { "key": "adminName", "value": "Clinic Admin", "type": "text" },
+                { "key": "adminEmail", "value": "{{clinicAdminEmail}}", "type": "text" },
+                { "key": "password", "value": "{{clinicAdminPassword}}", "type": "text" },
+                { "key": "subscriptionPlan", "value": "premium", "type": "text" },
+                { "key": "clinicType", "value": "general", "type": "text" },
+                { "key": "doctorCount", "value": "2", "type": "text" },
+                { "key": "staffCount", "value": "5", "type": "text" },
+                { "key": "consultationFee", "value": "300", "type": "text" },
+                { "key": "openingHours", "value": "09:00-19:00", "type": "text" },
+                { "key": "hasOPD", "value": "true", "type": "text" },
+                { "key": "hasLab", "value": "true", "type": "text" },
+                { "key": "hasMedicalStore", "value": "true", "type": "text" }
+              ]
             }
           }
         },
