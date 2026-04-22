@@ -16,6 +16,15 @@ This backend now supports full date-wise OPD flow:
 3. Run `npm run seed:super-admin`
 4. Run `npm run dev`
 
+### SMTP configuration (for account + visit emails)
+Set these variables in `.env`:
+- `SMTP_HOST`
+- `SMTP_PORT` (example: `465` for SSL)
+- `SMTP_SECURE` (`true` for SSL/TLS sockets)
+- `SMTP_USER`
+- `SMTP_PASS`
+- `SMTP_FROM`
+
 ## Fixed Super Admin
 - Email: `superadmin@clinicapp.com`
 - Password: `Admin@123`
